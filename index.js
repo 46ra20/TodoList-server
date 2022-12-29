@@ -68,6 +68,22 @@ async function runMongoDB(){
             const deleteTask = await toDoList.deleteOne(query)
             res.send(deleteTask)
         })
+
+        app.put("/update-task/",async(req,res)=>{
+            const id = req.query.id;
+            const query = {"_id":ObjectId(id)}
+            const data = req.body;
+            const updateTask = await toDoList.updateOne(query,{$set:{"task":data.update}},{upsert:true})
+            res.send(updateTask)
+        })
+
+        app.put("/add-comment/",async(req,res)=>{
+            const id = req.query.id;
+            const query = {"_id":ObjectId(id)}
+            const data = req.body.comment;
+            const addComment = await toDoList.updateOne(query,{$set:{"comment":data}},{upsert:true})
+            res.send(addComment)
+        })
     }
     catch(err){
         console.log(err)
